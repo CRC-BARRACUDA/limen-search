@@ -1,0 +1,11 @@
+/target
+/dist
+Cargo.lock
+# Built/loaded native library — never committed to source.
+*.so
+*.dll
+*.dylib
+
+# The dictionaries somebody kept on their own machine: their work, not the
+# module's source.
+dictionaries.json

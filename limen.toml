@@ -1,0 +1,37 @@
+[module]
+name = "search"
+display_name = "Local search"
+description = "Finds files, folders and archives on THIS machine by name, phrase, regular expression or date — and, when asked, by what text files, Office documents and .zip archives say inside. Across several paths at once, read in parallel."
+version = "0.1.0"
+language = "native"
+entry = "search"
+abi = "native"
+authors = ["Limen"]
+repo = "CRC-BARRACUDA/limen-search"
+tags = ["limen", "barracuda", "search", "files", "forensics", "local"]
+
+[provides]
+capabilities = ["search.local"]
+
+[permissions]
+# Only what the user points it at. The paths are typed or picked in the module's
+# own screen, and nothing outside them is read.
+#
+# Note what "read" covers: with "Search inside file contents" ticked this opens
+# and reads files under those paths — text files, Word/Excel/PowerPoint
+# documents, and the members of .zip archives — rather than only listing their
+# names. Off by default, and nothing is opened at all when the dictionary is
+# empty.
+filesystem = ["<user-selected>"]
+
+# Deliberately NOT here:
+#
+#   network — nothing is sent. A search reads this machine and says what it
+#     found, on this machine.
+#
+#   subprocess — the walk is done in this process, by threads. Shelling out to
+#     `find` would mean a second tool's behaviour to explain and a shell to
+#     quote paths for.
+#
+#   elevate — a search runs as whoever started it, and says how many places it
+#     was not allowed to read rather than asking for more.

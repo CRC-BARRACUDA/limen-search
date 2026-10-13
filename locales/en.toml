@@ -1,0 +1,159 @@
+# Every word this module puts on screen. The module card's own title and
+# description are not here — the host reads those from limen.toml for English.
+
+[ui]
+title = "Local search"
+where = "Where to look"
+path = "Path"
+path_ph = "D:/dev/projects"
+add = "Add path"
+add_help = "Type a path and press Add path, or leave the box empty to browse for a folder."
+what = "What to look for"
+dict = "Dictionary"
+term = "Term"
+term_ph = "invoice"
+regex = "Regular expression"
+add_term = "Add term"
+inside = "Search inside file contents"
+in_zip = "Look inside archives"
+inside_help = "Reading files is far slower than matching their names, so only the files the dictionary, kinds, sizes and dates have already left standing are opened — and nothing is opened at all when the dictionary is empty. Contents: text files, PDFs, Word, Excel, PowerPoint and OpenDocument, and the older .doc, .xls and .ppt as a best effort. Archives: .zip and everything built on it (.jar, .apk, .epub), .tar, .tar.gz, .gz and .7z — member names, and their contents too when both boxes are ticked. Not opened: .rar, disk images, and archives inside archives."
+dict_help = "A word or phrase is found anywhere in a name, whatever the case. Tick the box to add a regular expression instead, which is matched against the whole name."
+narrow = "Narrow it down"
+kind = "Kind"
+larger = "Larger than"
+smaller = "Smaller than"
+created_after = "Created after"
+created_before = "Created before"
+changed_after = "Changed after"
+changed_before = "Changed before"
+threads = "Threads"
+unbounded = "With an empty dictionary and nothing narrowing it, this will list every name under every path."
+search = "Search"
+back = "Back"
+
+[kind]
+any = "Anything"
+files = "Files"
+dirs = "Folders"
+archives = "Archives"
+file = "File"
+dir = "Folder"
+archive = "Archive"
+
+[threads]
+auto = "Auto"
+
+# How a line of the dictionary is written, said in words — so the punctuation
+# is not the only thing that tells the kinds apart.
+[term]
+word = "Word"
+phrase = "Phrase"
+pattern = "Pattern"
+note = "Note"
+
+[col]
+term = "Term"
+rule = "Found by"
+where = "Where"
+name = "Name"
+kind = "Kind"
+size = "Size"
+created = "Created"
+changed = "Changed"
+path = "Path"
+
+[scan]
+looking = "Looking…"
+hint = "Reading the paths you named, on every thread this machine will give."
+stop = "Stop"
+stopping = "Stopping…"
+stopping_hint = "Finishing the file it is reading, then showing what it found."
+died = "The search stopped before it finished. Nothing was returned — try again, or narrow it down."
+
+[where]
+name = "Name"
+text = "Contents"
+more = "and {n} more"
+
+[found]
+counted = "{hits} found · {dirs} folders read · {seen} entries looked at"
+none = "Nothing matched. The dictionary, the dates and the kind all have to agree."
+capped = "Stopped at {n} results — narrow the dictionary, or search fewer places."
+denied = "{n} places could not be read by this user."
+kernel = "{n} kernel filesystems were not walked into — /proc, /sys, /dev and the like hold no files on a disk. Name one as a path to search it anyway."
+read = "{read} files read inside · {binary} not text · {big} too large · {unread} could not be read"
+hint = "Right-click a row for actions; double-click to open its details."
+
+# Moving through a long list of results.
+[page]
+first = "First"
+prev = "Previous"
+next = "Next"
+last = "Last"
+of = "Page {page} of {pages}"
+showing = "Showing {from}–{to} of {all}"
+
+[covered]
+one = "{path} is already inside {by}, and was searched as part of it."
+
+[dict]
+none = "The dictionary is empty. A search with nothing in it lists every name, narrowed by the rest of the form."
+hint = "Right-click a term to take it out of the dictionary."
+remove = "Remove"
+added = "Added {term}"
+removed = "Removed {term}"
+already = "{term} is already in the dictionary."
+needs_term = "Type a term first, then press Add term."
+bad_pattern = "That is not a valid regular expression: {why}"
+kept = "Saved the dictionary as {name}."
+loaded = "Loaded {name} — {n} terms."
+forgot = "Forgot {name}."
+gone = "There is no dictionary called {name} any more."
+needs_name = "Give the dictionary a name first, then press Save."
+empty = "There is nothing in the dictionary to keep."
+nowhere = "This module has nowhere to keep a dictionary."
+failed = "Could not write it: {why}"
+exported = "Written to {path}"
+export_cancelled = "Not exported — the save was cancelled."
+imported = "Loaded {name} — {n} terms."
+import_cancelled = "Nothing imported — no file was chosen."
+import_empty = "{path} has no terms in it."
+unreadable = "{path} could not be read."
+rejected = "{line} is not a pattern: {why}"
+
+[nowhere]
+title = "Nowhere to look"
+body = "None of these paths is a folder this user can read:"
+
+[detail]
+inside = "What was found inside"
+title = "Result"
+missing = "This result is not in the latest search — search again."
+
+[menu]
+about = "Details"
+reveal = "Show in folder"
+open = "Open"
+
+[paths]
+none = "No paths yet. The search needs at least one."
+hint = "Right-click a path to take it out of the list."
+remove = "Remove"
+added = "Added {path}"
+removed = "Removed {path}"
+already = "{path} is already in the list."
+missing = "{path} is not there — check the spelling, or leave the box empty and browse for it."
+not_a_folder = "{path} is a file, not a folder. A search starts from a folder."
+
+[keep]
+name = "Dictionary name"
+name_ph = "Exfil sweep"
+save = "Save"
+load = "Load"
+forget = "Forget"
+forget_title = "Forget this dictionary?"
+cancel = "Cancel"
+forget_what = "the saved dictionary"
+export = "Export…"
+import = "Import…"
+saved = "Saved dictionaries"

@@ -1,0 +1,29 @@
+# Standalone package (it lives inside the Limen repo tree but is its own module).
+[workspace]
+
+[package]
+name = "search"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-or-later"
+description = "Finds files, folders and archives on THIS machine by name, pattern or date — and, when asked, by what they say inside."
+repository = "https://github.com/CRC-BARRACUDA/limen-search"
+
+[lib]
+name = "search"
+crate-type = ["cdylib"]
+
+[dependencies]
+cfb = "0.9"
+flate2 = "1"
+limen-sdk-rust = { git = "https://github.com/CRC-BARRACUDA/Limen.git" }
+pdf-extract = "0.7"
+# A dictionary term can be a regular expression, which is the whole reason this
+# is here: writing one by hand would be a worse regex engine with the same bugs.
+regex = "1.10"
+# A saved search is a file somebody may open, read and edit, so it is written
+# out with newlines and indentation rather than as one long line.
+serde_json = "1"
+sevenz-rust = "0.6"
+tar = "0.4"
+zip = { version = "0.6", default-features = false, features = ["deflate"] }
