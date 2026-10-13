@@ -472,7 +472,7 @@ impl Search {
             // Canonical, so that two spellings of one folder cannot both be in
             // the list — the same rule the walk itself prunes by.
             Ok(p) if p.is_dir() => {
-                let p = p.to_string_lossy().to_string();
+                let p = crate::roots::tidy(p).to_string_lossy().to_string();
                 self.append(&p, lang)
             }
             Ok(_) => self.say(lang, "paths.not_a_folder", &[("path", typed)]),

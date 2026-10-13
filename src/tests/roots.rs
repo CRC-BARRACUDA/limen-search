@@ -1,10 +1,36 @@
 //! Which paths are actually walked, when somebody names overlapping ones.
 
-use crate::roots::prune;
+use crate::roots::{prune, tidy};
 use std::path::PathBuf;
 
 fn paths(given: &[&str]) -> Vec<PathBuf> {
     given.iter().map(PathBuf::from).collect()
+}
+
+/// A canonical path is shown the way somebody would write it, not in the
+/// extended-length spelling the filesystem answers in.
+#[test]
+#[cfg(windows)]
+fn the_verbatim_prefix_is_taken_off_a_canonical_path() {
+    let shown = |s: &str| tidy(PathBuf::from(s)).display().to_string();
+
+    assert_eq!(shown(r"\\?\C:\Users\Admin"), r"C:\Users\Admin");
+    assert_eq!(shown(r"\\?\C:\"), r"C:\");
+    // A share, which names UNC in the long spelling and does not in the short.
+    assert_eq!(shown(r"\\?\UNC\server\share\dir"), r"\\server\share\dir");
+    // Anything already written the short way is left exactly as it is.
+    assert_eq!(shown(r"C:\Users\Admin"), r"C:\Users\Admin");
+    assert_eq!(shown(r"\\server\share"), r"\\server\share");
+    assert_eq!(shown("relative\\thing"), "relative\\thing");
+}
+
+/// Off Windows there is no such prefix, and a path is its own answer.
+#[test]
+#[cfg(not(windows))]
+fn a_path_is_left_alone_where_there_is_no_such_prefix() {
+    for p in ["/var/log", "/home/me", "relative/thing"] {
+        assert_eq!(tidy(PathBuf::from(p)).display().to_string(), p);
+    }
 }
 
 /// The case from the brief: a folder named beside its own parent is walked

@@ -282,7 +282,14 @@ fn a_typed_path_is_checked_before_it_is_added() {
 
     let added = module.add_typed_for_test(&here, "en");
     assert!(added.to_string().contains("Added"), "{added}");
-    assert_eq!(listed_paths(&added), [std::fs::canonicalize(&here).unwrap().display().to_string()]);
+    let canonical = crate::roots::tidy(std::fs::canonicalize(&here).unwrap());
+    assert_eq!(listed_paths(&added), [canonical.display().to_string()]);
+    // Written the way somebody would write it. Canonical on Windows means the
+    // extended-length spelling, and a list headed `\\?\C:\...` is a list of
+    // paths nobody recognises as their own.
+    for shown in listed_paths(&added) {
+        assert!(!shown.starts_with("\\\\?\\"), "shown verbatim: {shown}");
+    }
     // The box it was typed into is empty again, or the next press adds it twice.
     assert!(
         !added.to_string().contains(&format!("\"id\":\"path\",\"default\":\"{here}")),

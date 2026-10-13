@@ -34,7 +34,7 @@ pub(crate) fn resolve(given: &[String]) -> Roots {
         // on the same path — otherwise two spellings of one directory look like
         // two directories and neither covers the other.
         match std::fs::canonicalize(line) {
-            Ok(p) if p.is_dir() => found.push(p),
+            Ok(p) if p.is_dir() => found.push(tidy(p)),
             _ => missing.push(PathBuf::from(line)),
         }
     }
@@ -82,3 +82,33 @@ pub(crate) fn prune(given: Vec<PathBuf>) -> Roots {
 fn covers(parent: &Path, child: &Path) -> bool {
     child.starts_with(parent)
 }
+
+/// A canonical path as somebody would write it down.
+///
+/// [`std::fs::canonicalize`] answers in Windows' extended-length form, the one
+/// that starts `\\?\` — the right thing to hand to the filesystem and the
+/// wrong thing to put in front of a person: it is what every result, every
+/// saved report and every path in the list would otherwise be headed with.
+///
+/// Taking the prefix off costs nothing. Rust's own file calls put it back for
+/// any path long enough to need it, so a six-hundred-character path still
+/// opens; and the verbatim form is the one spelling that refuses a forward
+/// slash, which is how a good many people type a drive.
+pub(crate) fn tidy(path: PathBuf) -> PathBuf {
+    if !cfg!(windows) {
+        return path;
+    }
+    let text = path.to_string_lossy();
+    let Some(rest) = text.strip_prefix(VERBATIM) else {
+        return path;
+    };
+    // The verbatim spelling of a share names UNC first; written out, it is the
+    // two leading slashes everybody else writes.
+    match rest.strip_prefix("UNC\\") {
+        Some(share) => PathBuf::from(format!("\\\\{share}")),
+        None => PathBuf::from(rest),
+    }
+}
+
+/// What Windows puts in front of an extended-length path.
+const VERBATIM: &str = "\\\\?\\";
